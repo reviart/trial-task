@@ -57,20 +57,18 @@ async function getTransactions(walletAddress) {
 }
 
 async function getPositions(weiAmount = '0') {
-  const coin = 'ETH';
   const pairSymbols = ['USDT', 'USDC', 'BTC'];
-  const url = 'https://api.binance.com/api/v3/ticker/price?symbol=';
+  const url = 'https://api.binance.com/api/v3/ticker/price?symbol=ETH';
 
   const result = [];
   await Promise.all(
     pairSymbols.map(async (pair) => {
-      const symbol = `${coin}${pair}`;
-      const response = await axios.get(`${url}${symbol}`);
+      const response = await axios.get(`${url}${pair}`);
       const { data } = response;
       const quantity = +data.price * +weiAmount;
 
       result.push({
-        symbol,
+        symbol: pair,
         quantity: quantity.toFixed(8),
       });
     })
